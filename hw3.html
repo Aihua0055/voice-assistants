@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+ <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <title>JavaScript Form Exercise</title>
+  </head>
+
+  <body class="bg-dark">
+
+    <main class="w-75 mx-auto">
+      <form class="bg-light border rounded mx-auto mt-5 p-3">
+        <h1 class="h2 text-center mt-2 mb-4">Homework 3 - Add an event to my calendar.</h1>
+        <div class="form-group">
+          <label for="name">Event title</label>
+          <input type="text" class="form-control" id="name" onclick="voiceToText('name')" />
+        </div>
+
+        <div class="form-group">
+          <label for="comments">Event</label>
+          <textarea class="form-control" id="comments" rows="3" onclick="voiceToText('comments')"></textarea>
+        </div>
+        <div class="form-group mt-4">
+          <input type="submit" class="btn btn-primary btn-block" value="Submit" onclick = "speak()" />
+        </div>
+      </form>
+    </main>
+
+    <script>
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      // inputVoice = all input texts for speak when click "submit" button.
+      var inputVoice = "";
+      const eventTitle = document.getElementById("name");
+      const eventDetails = document.getElementById("comments");
+      // Input: elementID and voice recognition result. Output: 1.write value to element. 2. Store voice to texts for speak ->inputVoice
+      function voiceToText(elementID){
+        console.log(elementID);
+        const inputElement = document.getElementById(elementID);
+        var recognition = new SpeechRecognition();
+        recognition.start();
+        
+        recognition.onresult = function(event) {
+          if (event.results.length > 0) {
+
+            if(inputElement == "name"){
+              inputElement = "name";
+              
+            }
+            else if (inputElement=="comments"){
+              inputElement = "comments"
+            }
+            inputElement.value = event.results[0][0].transcript;
+            inputVoice +=inputElement.value;
+            console.log(inputElement.value);
+          }
+         }
+  
+      }
+
+      // Repeat inputs.
+      function speak(){
+        event.preventDefault();
+
+        let utterance = new SpeechSynthesisUtterance(inputVoice);
+        console.log(inputVoice);
+        speechSynthesis.speak(utterance)
+      }
+  
+  </script>
+  </body>
+</html>
+
